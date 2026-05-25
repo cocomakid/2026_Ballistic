@@ -10,23 +10,37 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        UpdateButtonState("");
+        inputField.onValueChanged.AddListener(OnInputFieldValueChanged);
         gameStartButton.onClick.AddListener(OnGameStartButtonClicked);
+    }
+
+    private void OnInputFieldValueChanged(string currentText)
+    {
+        UpdateButtonState(currentText);
+    }
+
+    private void UpdateButtonState(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            gameStartButton.interactable = false;
+        }
+        else
+        {
+            gameStartButton.interactable = true;
+        }
     }
 
     private void OnGameStartButtonClicked()
     {
         string playerName = inputField.text;
-        if (string.IsNullOrEmpty(playerName))
-        {
-            Debug.Log("플레이어 이름을 입력하세요.");
-            return;
-        }
 
         PlayerPrefs.SetString("PlayerName", playerName);
         PlayerPrefs.Save();
 
         Debug.Log("플레이어 이름 저장 됨: " + playerName);
 
-        SceneManager.LoadScene("Level_1");
+        SceneManager.LoadScene("Test");
     }
 }
